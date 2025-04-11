@@ -34,11 +34,38 @@ typedef struct {
 
 } sprite_t;
 
+
+//////////////////////////////
+// Structure pour les upgrades
+//////////////////////////////
+
+#define UPGRADE_COUNT 5
+
+typedef enum upgrade_type_e {
+    UPGRADE_TAFF_PER_CLICK,
+    UPGRADE_AUTO_TAFF,
+    UPGRADE_MULTIPLIER,
+} upgrade_type_t;
+
+typedef struct upgrade_s {
+    char name[32];
+    int cost;
+    upgrade_type_t type;
+    float value; // Ex: +1 taff par clic, +0.5 taffs/sec, ou x2 production
+    SDL_Rect box;
+    bool purchased; // pour ne pas la racheter
+} upgrade_t;
+
+
+extern upgrade_t upgrades[UPGRADE_COUNT];
+
+
 typedef struct game_s {
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_Texture *texture;
     TTF_Font *font;
+    TTF_Font *upgrade_font;
 
     sprite_t *puff;
 
