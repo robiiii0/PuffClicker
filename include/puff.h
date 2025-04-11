@@ -18,15 +18,25 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
+typedef struct player_s {
+    int taffs;
+    int taffs_per_click;
+    int upgrades;
+} player_t;
+
 typedef struct {
     SDL_Texture *texture;
     SDL_Rect dest_rect;
 } sprite_t;
+
 typedef struct game_s {
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_Texture *texture;
     sprite_t *puff;
+
+    player_t *player;
+
     bool quit;
 } game_t;
 

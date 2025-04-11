@@ -1,6 +1,5 @@
 #include "puff.h"
 
-
 int handle_event(SDL_Event event, game_t *game)
 {
     int key;

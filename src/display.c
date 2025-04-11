@@ -18,6 +18,7 @@ void run_game(game_t *game)
         SDL_RenderCopy(game->renderer, game->puff->texture, NULL, &game->puff->dest_rect);
 
         // end draw
+        SDL_Delay(16);  // ~60 FPS
         SDL_RenderPresent(game->renderer);
     }
 }

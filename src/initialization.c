@@ -48,9 +48,22 @@ int init_sdl(game_t *game)
 }
 
 
+int init_player(player_t *player)
+{
+    player->taffs = 0;
+    player->taffs_per_click = 1;
+    player->upgrades = 0;
+
+    return 0;
+}
+
 int init_game(game_t *game)
 {
     if (init_sdl(game))
+        return 1;
+
+    game->player = (player_t*)malloc(sizeof(player_t));
+    if (init_player(game->player))
         return 1;
 
     game->quit = false;
