@@ -8,6 +8,7 @@ void free_game(game_t *game)
 
     SDL_DestroyWindow(game->window);
     IMG_Quit();
+    TTF_Quit();
     SDL_Quit();
 
     free(game);

@@ -10,7 +10,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
-
+#include <SDL_ttf.h>
 
 #define LOG_ERROR(...) fprintf(stderr, __VA_ARGS__)
 #define LOG_INFO(...) fprintf(stdout, __VA_ARGS__)
@@ -33,6 +33,8 @@ typedef struct game_s {
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_Texture *texture;
+    TTF_Font *font;
+
     sprite_t *puff;
 
     player_t *player;
