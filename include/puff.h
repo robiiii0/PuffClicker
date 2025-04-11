@@ -28,6 +28,10 @@ typedef struct player_s {
 typedef struct {
     SDL_Texture *texture;
     SDL_Rect dest_rect;
+
+    int original_w;
+    int original_h;
+
 } sprite_t;
 
 typedef struct game_s {
@@ -41,6 +45,9 @@ typedef struct game_s {
     player_t *player;
 
     bool quit;
+
+    Uint32 puff_anim_start;  // temps du dernier clic
+    bool puff_animating; 
 } game_t;
 
 

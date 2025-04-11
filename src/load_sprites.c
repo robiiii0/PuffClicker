@@ -23,10 +23,15 @@ sprite_t *load_sprite(const char *filepath, SDL_Renderer *renderer)
     int new_w = original_w / 2;
     int new_h = original_h / 2;
 
+
+
+
     sprite_t *sprite = malloc(sizeof(sprite_t));
     sprite->texture = texture;
     sprite->dest_rect.w = new_w;
     sprite->dest_rect.h = new_h;
+    sprite->original_w = sprite->dest_rect.w;
+    sprite->original_h = sprite->dest_rect.h;
 
     // Centrage
     sprite->dest_rect.x = (SCREEN_WIDTH - new_w) / 2;

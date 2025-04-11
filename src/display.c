@@ -70,6 +70,8 @@ void run_game(game_t *game)
     SDL_Event event;
     Uint32 last_tick = SDL_GetTicks(); 
 
+
+
     while (!game->quit)
     {
         while (SDL_PollEvent(&event))
@@ -87,6 +89,29 @@ void run_game(game_t *game)
 
         SDL_SetRenderDrawColor(game->renderer, 189, 189, 189, 255);
         SDL_RenderClear(game->renderer);
+
+        if (game->puff_animating) {
+            Uint32 now = SDL_GetTicks();
+            Uint32 elapsed = now - game->puff_anim_start;
+        
+            if (elapsed >= 200) {
+                // Animation terminée
+                game->puff_animating = false;
+                game->puff->dest_rect.w = game->puff->original_w;
+                game->puff->dest_rect.h = game->puff->original_h;
+                game->puff->dest_rect.x = (SCREEN_WIDTH - game->puff->dest_rect.w) / 2;
+                game->puff->dest_rect.y = (SCREEN_HEIGHT - game->puff->dest_rect.h) / 2;
+            } else {
+                // Phase d'animation : réduction puis retour
+                float progress = elapsed / 200.0f; // 0.0 à 1.0
+                float scale = 1.0f - 0.1f * sinf(progress * M_PI); // effet "smooth"
+        
+                game->puff->dest_rect.w = game->puff->original_w * scale;
+                game->puff->dest_rect.h = game->puff->original_h * scale;
+                game->puff->dest_rect.x = (SCREEN_WIDTH - game->puff->dest_rect.w) / 2;
+                game->puff->dest_rect.y = (SCREEN_HEIGHT - game->puff->dest_rect.h) / 2;
+            }
+        }
 
         SDL_RenderCopy(game->renderer, game->puff->texture, NULL, &game->puff->dest_rect);
         display_text(game);  // (si display_text fonctionne bien)

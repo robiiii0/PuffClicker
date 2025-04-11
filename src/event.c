@@ -23,6 +23,8 @@ int handle_event(SDL_Event event, game_t *game)
                     mouse_y <= game->puff->dest_rect.y + game->puff->dest_rect.h) {
                     // Incrémenter les "taffs" (actions de clic)
                     game->player->taffs += game->player->taffs_per_click;
+                    game->puff_anim_start = SDL_GetTicks();
+                    game->puff_animating = true;
                 }
             }
             break;
