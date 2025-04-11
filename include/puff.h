@@ -21,8 +21,9 @@
 typedef struct player_s {
     float taffs;
     float taffs_per_click;
-    int upgrades;
     float taffs_per_second;
+    int taff_multiplier;
+    int upgrades;
 } player_t;
 
 typedef struct {
@@ -51,9 +52,8 @@ typedef struct upgrade_s {
     char name[32];
     int cost;
     upgrade_type_t type;
-    float value; // Ex: +1 taff par clic, +0.5 taffs/sec, ou x2 production
+    float value;
     SDL_Rect box;
-    bool purchased; // pour ne pas la racheter
 } upgrade_t;
 
 
