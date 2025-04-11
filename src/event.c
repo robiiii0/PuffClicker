@@ -26,6 +26,14 @@ int handle_event(SDL_Event event, game_t *game)
                     game->puff_anim_start = SDL_GetTicks();
                     game->puff_animating = true;
                 }
+
+                for (int i = 0; i < UPGRADE_COUNT; i++) {
+                    SDL_Rect box = upgrades[i].box;
+
+                    if (SDL_PointInRect(&(SDL_Point){mouse_x, mouse_y}, &box)) {
+                        apply_upgrade(&upgrades[i], game->player);
+                    }
+                }
             }
             break;
         default:

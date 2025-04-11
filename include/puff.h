@@ -85,3 +85,4 @@ void free_game(game_t *game);
 int handle_event(SDL_Event event, game_t *game);
 sprite_t *load_sprite(const char *filepath, SDL_Renderer *renderer);
 void destroy_sprite(sprite_t *sprite);
+void apply_upgrade(upgrade_t *upgrade, player_t *player);

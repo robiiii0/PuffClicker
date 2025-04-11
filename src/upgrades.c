@@ -10,11 +10,16 @@ upgrade_t upgrades[UPGRADE_COUNT] = {
 };
 
 
-void apply_upgrade(upgrade_t *upgrade, player_t *player) {
-
+void apply_upgrade(upgrade_t *upgrade, player_t *player)
+{
+    if (player->taffs < upgrade->cost) {
+        LOG_INFO("Not enough taffs to buy %s\n", upgrade->name);
+        return;
+    }
+    player->taffs -= upgrade->cost;
     switch (upgrade->type) {
         case UPGRADE_TAFF_PER_CLICK:
-            player->taffs += upgrade->value;
+            player->taffs_per_click += upgrade->value;
             break;
         case UPGRADE_AUTO_TAFF:
             player->taffs_per_second += upgrade->value;
@@ -23,5 +28,7 @@ void apply_upgrade(upgrade_t *upgrade, player_t *player) {
             player->taff_multiplier *= upgrade->value;
             break;
     }
+
+    LOG_INFO("Upgrade %s applied !\n", upgrade->name);
 
 }

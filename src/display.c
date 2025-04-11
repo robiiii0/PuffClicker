@@ -71,7 +71,7 @@ void display_taffs_per_second(game_t *game)
 {
     SDL_Color textColor = {0, 0, 0, 255};
     char buffer[50];
-    snprintf(buffer, sizeof(buffer), "Taffs/sec: %.2f", game->player->taffs_per_second);
+    snprintf(buffer, sizeof(buffer), "%.2f taffs/s (* %d)", game->player->taffs_per_second * game->player->taff_multiplier, game->player->taff_multiplier);
 
     SDL_Surface* surface = TTF_RenderText_Solid(game->font, buffer, textColor);
     if (!surface) {
@@ -115,11 +115,11 @@ void run_game(game_t *game)
 
         Uint32 current_tick = SDL_GetTicks();
         if (current_tick - last_tick >= 1000) {
-            game->player->taffs += game->player->taffs_per_second;
+            game->player->taffs += game->player->taffs_per_second * game->player->taff_multiplier;
             last_tick = current_tick;
 
-            LOG_INFO("Gain passif: %.2f taffs (total: %.2f)\n", 
-                     game->player->taffs_per_second, 
+            LOG_INFO("Gain passif: %.2f taffs (total: %.2f)\n",
+                     game->player->taffs_per_second,
                      game->player->taffs);
         }
 
@@ -129,7 +129,7 @@ void run_game(game_t *game)
         if (game->puff_animating) {
             Uint32 now = SDL_GetTicks();
             Uint32 elapsed = now - game->puff_anim_start;
-        
+
             if (elapsed >= 200) {
                 // Animation terminée
                 game->puff_animating = false;
