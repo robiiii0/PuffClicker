@@ -42,9 +42,6 @@ typedef struct game_s {
 
 
 
-
-
-
 int init_game(game_t *game);
 void run_game(game_t *game);
 void free_game(game_t *game);
