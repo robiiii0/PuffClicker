@@ -21,9 +21,10 @@ all: $(BIN)
 
 $(BIN): $(OBJ)
 	$(CC) $(OBJ) -o $(BIN) $(CFLAGS) $(LDFLAGS)
+	mv $(OBJ) bin/
 
 clean:
-	rm -f $(OBJ)
+	rm -f bin/*.o
 
 fclean: clean
 	rm -f $(BIN)
