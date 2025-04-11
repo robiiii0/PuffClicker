@@ -12,6 +12,12 @@ void display_upgrades(game_t *game)
 
     for (int i = 0; i < count; i++) {
         // Affiche le fond de la box
+        if (game->player->taffs < upgrades[i].cost) {
+            bgColor = (SDL_Color){150, 150, 150, 255};  // Trop cher : gris clair
+        } else {
+            bgColor = (SDL_Color){0, 128, 255, 255};  // Disponible : bleu
+        }
+
         SDL_SetRenderDrawColor(renderer, bgColor.r, bgColor.g, bgColor.b, bgColor.a);
         SDL_RenderFillRect(renderer, &upgrades[i].box);
 
@@ -40,8 +46,8 @@ void display_upgrades(game_t *game)
 void display_text(game_t *game)
 {
     char buffer[50];
-    snprintf(buffer, sizeof(buffer), "%.2f taffs", game->player->taffs);  
-    SDL_Color textColor = {0, 0, 0, 255};  
+    snprintf(buffer, sizeof(buffer), "%.2f taffs", game->player->taffs);
+    SDL_Color textColor = {0, 0, 0, 255};
 
     SDL_Surface* textSurface = TTF_RenderText_Solid(game->font, buffer, textColor);
     if (!textSurface) {
@@ -52,7 +58,7 @@ void display_text(game_t *game)
     SDL_Texture* textTexture = SDL_CreateTextureFromSurface(game->renderer, textSurface);
     if (!textTexture) {
         printf("Unable to create texture from surface! SDL_Error: %s\n", SDL_GetError());
-        SDL_FreeSurface(textSurface);  
+        SDL_FreeSurface(textSurface);
         return;
     }
 
@@ -89,7 +95,7 @@ void display_taffs_per_second(game_t *game)
     SDL_Rect rect = {
         (SCREEN_WIDTH * 4) / 6,
         (SCREEN_HEIGHT - surface->h) / 10,
-        
+
         surface->w,
         surface->h
     };
@@ -141,7 +147,7 @@ void run_game(game_t *game)
                 // Phase d'animation : réduction puis retour
                 float progress = elapsed / 200.0f; // 0.0 à 1.0
                 float scale = 1.0f - 0.1f * sinf(progress * M_PI); // effet "smooth"
-        
+
                 game->puff->dest_rect.w = game->puff->original_w * scale;
                 game->puff->dest_rect.h = game->puff->original_h * scale;
                 game->puff->dest_rect.x = (SCREEN_WIDTH - game->puff->dest_rect.w) / 2;
