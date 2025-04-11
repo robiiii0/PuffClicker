@@ -161,7 +161,6 @@ void run_game(game_t *game)
 
         display_upgrades(game);
         // end draw
-        SDL_Delay(16);  // ~60 FPS
         SDL_RenderPresent(game->renderer);
         SDL_Delay(16);  // ~60 FPS
     }
