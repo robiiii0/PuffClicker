@@ -19,9 +19,10 @@
 #define SCREEN_HEIGHT 720
 
 typedef struct player_s {
-    int taffs;
-    int taffs_per_click;
+    float taffs;
+    float taffs_per_click;
     int upgrades;
+    float taffs_per_second;
 } player_t;
 
 typedef struct {

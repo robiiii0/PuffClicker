@@ -86,6 +86,8 @@ int init_game(game_t *game)
         SDL_Quit();
         return 1;
     }
+    game->player->taffs_per_second = 0.1f; // Gain passif par seconde
+    game->player->taffs_per_click = 1.0f; // Gain par clic
 
     return 0;
 }
