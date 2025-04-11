@@ -9,6 +9,12 @@ int init_sdl(game_t *game)
         return 1;
     }
 
+    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG)) {
+        LOG_ERROR("Erreur IMG_Init: %s\n", IMG_GetError());
+        return 1;
+    }
+    
+
     // Création d'une fenêtre
     game->window = SDL_CreateWindow(
         "GAME",                            // Title
@@ -48,6 +54,14 @@ int init_game(game_t *game)
         return 1;
 
     game->quit = false;
+    game->puff = load_sprite("images/vuse.png", game->renderer);
+    if (!game->puff) {
+        LOG_ERROR("Erreur chargement sprite\n");
+        SDL_DestroyRenderer(game->renderer);
+        SDL_DestroyWindow(game->window);
+        SDL_Quit();
+        return 1;
+    }
 
     return 0;
 }

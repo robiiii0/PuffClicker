@@ -8,7 +8,9 @@
 #include <stdbool.h>
 #include <unistd.h>
 
-#include <SDL2/SDL.h>
+#include <SDL.h>
+#include <SDL_image.h>
+
 
 #define LOG_ERROR(...) fprintf(stderr, __VA_ARGS__)
 #define LOG_INFO(...) fprintf(stdout, __VA_ARGS__)
@@ -16,13 +18,20 @@
 #define SCREEN_WIDTH 1280
 #define SCREEN_HEIGHT 720
 
+typedef struct {
+    SDL_Texture *texture;
+    SDL_Rect dest_rect;
+} sprite_t;
 typedef struct game_s {
     SDL_Window *window;
     SDL_Renderer *renderer;
     SDL_Texture *texture;
-
+    sprite_t *puff;
     bool quit;
 } game_t;
+
+
+
 
 
 
@@ -30,3 +39,5 @@ int init_game(game_t *game);
 void run_game(game_t *game);
 void free_game(game_t *game);
 int handle_event(SDL_Event event, game_t *game);
+sprite_t *load_sprite(const char *filepath, SDL_Renderer *renderer);
+void destroy_sprite(sprite_t *sprite);
