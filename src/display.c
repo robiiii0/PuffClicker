@@ -100,16 +100,38 @@ void display_taffs_per_second(game_t *game)
     SDL_FreeSurface(surface);
 }
 
+void render_background(game_t *game) {
+    if (game->background != NULL) {
+        // Obtenir la taille de l'écran
+        int screen_width, screen_height;
+        SDL_GetRendererOutputSize(game->renderer, &screen_width, &screen_height);
+
+        // Définir un SDL_Rect pour la taille et la position du fond d'écran
+        SDL_Rect dest_rect = { 0, 0, screen_width, screen_height };
+
+        // Afficher le fond d'écran
+        if (SDL_RenderCopy(game->renderer, game->background->texture, NULL, &game->background->dest_rect) != 0) {
+            printf("Erreur lors de l'affichage du fond d'écran: %s\n", SDL_GetError());
+        }
+    } else {
+        printf("Erreur : Le fond d'écran n'a pas été chargé correctement.\n");
+    }
+}
+
+
+
 
 void run_game(game_t *game)
 {
     SDL_Event event;
     Uint32 last_tick = SDL_GetTicks(); 
 
-
+    float scroll_speed = 2.0f;  // Vitesse de défilement globale
+    float delta_time = 0.016f;
 
     while (!game->quit)
     {
+        update_delta_time(game); 
         while (SDL_PollEvent(&event))
             handle_event(event, game);
 
@@ -125,6 +147,12 @@ void run_game(game_t *game)
 
         SDL_SetRenderDrawColor(game->renderer, 189, 189, 189, 255);
         SDL_RenderClear(game->renderer);
+        render_background(game);
+
+        // update_parallax(game, delta_time);
+
+        // Ajout du parallaxe ici
+        // render_parallax(game);  // Fonction à créer pour afficher les couches de parallaxe
 
         if (game->puff_animating) {
             Uint32 now = SDL_GetTicks();
@@ -154,9 +182,10 @@ void run_game(game_t *game)
         display_taffs_per_second(game);
 
         display_upgrades(game);
-        // end draw
+        
+        // End draw
         SDL_Delay(16);  // ~60 FPS
         SDL_RenderPresent(game->renderer);
-        SDL_Delay(16);  // ~60 FPS
     }
 }
+

@@ -1,6 +1,6 @@
 #include "puff.h"
 
-sprite_t *load_sprite(const char *filepath, SDL_Renderer *renderer)
+sprite_t *load_sprite(const char *filepath, SDL_Renderer *renderer, bool size_reduction)
 {
     SDL_Surface *surface = IMG_Load(filepath);
     if (!surface) {
@@ -20,9 +20,13 @@ sprite_t *load_sprite(const char *filepath, SDL_Renderer *renderer)
     SDL_FreeSurface(surface);
 
     // Taille réduite (ex: moitié)
-    int new_w = original_w / 2;
-    int new_h = original_h / 2;
+    int new_w = original_w;
+    int new_h = original_h;
 
+    if (size_reduction) {
+       new_w = original_w / 2;
+        new_h = original_h / 2;
+    }
 
 
 
@@ -37,6 +41,10 @@ sprite_t *load_sprite(const char *filepath, SDL_Renderer *renderer)
     sprite->dest_rect.x = (SCREEN_WIDTH - new_w) / 2;
     sprite->dest_rect.y = (SCREEN_HEIGHT - new_h) / 2;
 
+    printf("Sprite loaded: %s, size: %dx%d\n", filepath, new_w, new_h);
+
     return sprite;
 }
+
+
 

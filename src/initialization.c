@@ -26,6 +26,8 @@ int init_sdl(game_t *game)
         exit(1);
     }
 
+
+
     // Initialisation du font
     game->font = TTF_OpenFont("assets/font.ttf", 50);
     if (!game->font) {
@@ -91,7 +93,7 @@ int init_game(game_t *game)
         return 1;
 
     game->quit = false;
-    game->puff = load_sprite("assets/vuse.png", game->renderer);
+    game->puff = load_sprite("assets/vuse.png", game->renderer, true);
     if (!game->puff) {
         LOG_ERROR("Erreur chargement sprite\n");
         SDL_DestroyRenderer(game->renderer);
@@ -99,6 +101,17 @@ int init_game(game_t *game)
         SDL_Quit();
         return 1;
     }
+
+    game->background = load_sprite("assets/background.png", game->renderer, false);
+    if (!game->background) {
+        LOG_ERROR("Erreur lors du chargement du fond d'écran\n");
+        SDL_DestroyRenderer(game->renderer);
+        SDL_DestroyWindow(game->window);
+        SDL_Quit();
+        return 1;
+    }
+    
+    // load_parallax_layers(game->renderer, game);
     game->player->taffs_per_second = 0.1f; // Gain passif par seconde
     game->player->taffs_per_click = 1.0f; // Gain par clic
 
