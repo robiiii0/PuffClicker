@@ -1,6 +1,27 @@
 #include "puff.h"
 
 
+void draw_settings_button(SDL_Renderer *renderer, settings_button_t *button, TTF_Font *font) {
+    SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);  // Couleur verte
+    SDL_RenderFillRect(renderer, &button->rect);
+
+    // Dessiner le texte du bouton
+    SDL_Color textColor = {255, 255, 255, 255};  // Blanc et complètement opaque
+
+    SDL_Surface *textSurface = TTF_RenderText_Solid(font, button->label, textColor);  // Utilisation de button->label
+    SDL_Texture *textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    SDL_FreeSurface(textSurface);
+
+    // Positionner le texte au centre du bouton
+    int textWidth = 0, textHeight = 0;
+    SDL_QueryTexture(textTexture, NULL, NULL, &textWidth, &textHeight);
+    SDL_Rect textRect = {button->x + (button->w - textWidth) / 2, button->y + (button->h - textHeight) / 2, textWidth, textHeight};
+    
+    SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
+    SDL_DestroyTexture(textTexture);
+}
+
+
 void display_upgrades(game_t *game)
 {
     int count = UPGRADE_COUNT;
@@ -128,6 +149,12 @@ void run_game(game_t *game)
 {
     SDL_Event event;
     Uint32 last_tick = SDL_GetTicks(); 
+    settings_button_t my_button = {
+        300, 250, 200, 50,   // Position et taille du bouton
+        {300, 250, 200, 50}, // Initialisation de `rect` à la position et taille
+        "Paramètres"         // Texte du bouton
+    };
+    my_button.rect = (SDL_Rect) {my_button.x, my_button.y, my_button.w, my_button.h}; // Initialisation du rectangle
 
     float scroll_speed = 2.0f;  // Vitesse de défilement globale
     float delta_time = 0.016f;
@@ -182,6 +209,8 @@ void run_game(game_t *game)
         display_taffs_per_second(game);
 
         display_upgrades(game);
+
+        // draw_settings_button(game->renderer, &my_button, game->font);
         
         // End draw
         SDL_Delay(16);  // ~60 FPS

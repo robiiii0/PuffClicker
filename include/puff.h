@@ -53,6 +53,13 @@ typedef enum upgrade_type_e {
     UPGRADE_MULTIPLIER,
 } upgrade_type_t;
 
+
+typedef struct settings_button_s {
+    int x, y, w, h;         // Position et taille du bouton
+    SDL_Rect rect;          // Rectangle pour le bouton
+    const char *label;      // Texte du bouton
+} settings_button_t;
+
 typedef struct upgrade_s {
     char name[32];
     int cost;
