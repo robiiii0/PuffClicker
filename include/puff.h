@@ -137,13 +137,9 @@ void free_game(game_t *game);
 int handle_event(SDL_Event event, game_t *game);
 sprite_t *load_sprite(const char *filepath, SDL_Renderer *renderer, bool size_reduction);
 void destroy_sprite(sprite_t *sprite);
-<<<<<<< Updated upstream
 
 void update_delta_time(game_t* game);
 music_t *load_music();
 void free_music(music_t *music);
 void apply_upgrade(upgrade_t *upgrade, player_t *player);
-=======
-void apply_upgrade(upgrade_t *upgrade, player_t *player);
 void get_mouse_position(game_t *game);
->>>>>>> Stashed changes
