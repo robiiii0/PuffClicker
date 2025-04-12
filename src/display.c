@@ -152,10 +152,7 @@ void run_game(game_t *game)
         SDL_RenderClear(game->renderer);
         render_background(game);
 
-        // update_parallax(game, delta_time);
 
-        // Ajout du parallaxe ici
-        // render_parallax(game);  // Fonction à créer pour afficher les couches de parallaxe
 
         if (game->puff_animating) {
             Uint32 now = SDL_GetTicks();

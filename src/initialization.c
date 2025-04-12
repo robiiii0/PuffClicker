@@ -111,7 +111,6 @@ int init_game(game_t *game)
         return 1;
     }
     
-    // load_parallax_layers(game->renderer, game);
     game->player->taffs_per_second = 0.1f; // Gain passif par seconde
     game->player->taffs_per_click = 1.0f; // Gain par clic
 

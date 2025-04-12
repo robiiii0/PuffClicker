@@ -111,7 +111,4 @@ int handle_event(SDL_Event event, game_t *game);
 sprite_t *load_sprite(const char *filepath, SDL_Renderer *renderer, bool size_reduction);
 void destroy_sprite(sprite_t *sprite);
 
-void load_parallax_layers(SDL_Renderer* renderer, game_t *game);
-void render_parallax(game_t *game);
-void update_parallax(game_t *game, float delta_time);
 void update_delta_time(game_t* game);
