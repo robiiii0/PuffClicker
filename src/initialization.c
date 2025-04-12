@@ -17,12 +17,28 @@ int init_sdl(game_t *game)
         exit(1);
     }
 
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        printf("Erreur SDL_mixer : %s\n", Mix_GetError());
+        return 1;
+    }
+
+
+
     // Initialisation du font
     game->font = TTF_OpenFont("assets/font.ttf", 50);
     if (!game->font) {
         printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
         exit(1);
     }
+
+    // Initialisation de la musique faudra decommenter quand on voudra utiliser de la musique
+    // game->music = load_music();
+    // if (!game->music) {
+    //     printf("Erreur lors du chargement des musiques\n");
+    //     // Libération et fermeture propre
+    //     SDL_Quit();
+    //     return 1;
+    // }
 
     game->upgrade_font = TTF_OpenFont("assets/font.ttf", 20);
     if (!game->upgrade_font) {
@@ -84,7 +100,7 @@ int init_game(game_t *game)
         return 1;
 
     game->quit = false;
-    game->puff = load_sprite("assets/vuse.png", game->renderer);
+    game->puff = load_sprite("assets/vuse.png", game->renderer, true);
     if (!game->puff) {
         LOG_ERROR("Erreur chargement sprite\n");
         SDL_DestroyRenderer(game->renderer);
@@ -92,6 +108,16 @@ int init_game(game_t *game)
         SDL_Quit();
         return 1;
     }
+
+    game->background = load_sprite("assets/background.png", game->renderer, false);
+    if (!game->background) {
+        LOG_ERROR("Erreur lors du chargement du fond d'écran\n");
+        SDL_DestroyRenderer(game->renderer);
+        SDL_DestroyWindow(game->window);
+        SDL_Quit();
+        return 1;
+    }
+    
 
     return 0;
 }

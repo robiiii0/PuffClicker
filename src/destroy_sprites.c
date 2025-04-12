@@ -6,3 +6,5 @@ void destroy_sprite(sprite_t *sprite)
         free(sprite);
     }
 }
+
+
