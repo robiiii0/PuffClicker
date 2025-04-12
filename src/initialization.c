@@ -26,6 +26,11 @@ int init_sdl(game_t *game)
         exit(1);
     }
 
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        printf("Erreur SDL_mixer : %s\n", Mix_GetError());
+        return 1;
+    }
+
 
 
     // Initialisation du font
@@ -34,6 +39,15 @@ int init_sdl(game_t *game)
         printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
         exit(1);
     }
+
+    // Initialisation de la musique faudra decommenter quand on voudra utiliser de la musique
+    // game->music = load_music();
+    // if (!game->music) {
+    //     printf("Erreur lors du chargement des musiques\n");
+    //     // Libération et fermeture propre
+    //     SDL_Quit();
+    //     return 1;
+    // }
 
     game->upgrade_font = TTF_OpenFont("assets/font.ttf", 20);
     if (!game->upgrade_font) {

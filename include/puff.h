@@ -7,6 +7,8 @@
 #include <time.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include <SDL_mixer.h>
+
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -77,6 +79,15 @@ typedef struct parallax_init_t {
 } parallax_init_t;
 
 
+typedef struct music_s {
+    Mix_Music *menu;
+    Mix_Music *gameplay;
+    Mix_Music *victory;
+    Mix_Music *defeat;
+} music_t;
+
+
+
 
 extern upgrade_t upgrades[UPGRADE_COUNT];
 
@@ -100,6 +111,7 @@ typedef struct game_s {
     Uint32 puff_anim_start;  // temps du dernier clic
     parallax_init_t parallax_init[PARALLAX_NUMBERS];
     bool puff_animating; 
+    music_t *music;
 } game_t;
 
 
@@ -112,3 +124,5 @@ sprite_t *load_sprite(const char *filepath, SDL_Renderer *renderer, bool size_re
 void destroy_sprite(sprite_t *sprite);
 
 void update_delta_time(game_t* game);
+music_t *load_music();
+void free_music(music_t *music);
