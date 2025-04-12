@@ -102,21 +102,24 @@ void display_taffs_per_second(game_t *game)
 
 void render_background(game_t *game) {
     if (game->background != NULL) {
-        // Obtenir la taille de l'écran
         int screen_width, screen_height;
         SDL_GetRendererOutputSize(game->renderer, &screen_width, &screen_height);
 
-        // Définir un SDL_Rect pour la taille et la position du fond d'écran
-        SDL_Rect dest_rect = { 0, 0, screen_width, screen_height };
+        int bg_width = screen_width / 3;
+        int bg_height = screen_height;
+        int bg_x = (screen_width - bg_width) / 2;
+        int bg_y = 0;
 
-        // Afficher le fond d'écran
-        if (SDL_RenderCopy(game->renderer, game->background->texture, NULL, &game->background->dest_rect) != 0) {
+        SDL_Rect dest_rect = { bg_x, bg_y, bg_width, bg_height };
+
+        if (SDL_RenderCopy(game->renderer, game->background->texture, NULL, &dest_rect) != 0) {
             printf("Erreur lors de l'affichage du fond d'écran: %s\n", SDL_GetError());
         }
     } else {
         printf("Erreur : Le fond d'écran n'a pas été chargé correctement.\n");
     }
 }
+
 
 
 
