@@ -99,6 +99,9 @@ int init_game(game_t *game)
     if (init_player(game->player))
         return 1;
 
+    game->mouse_pos.x = 0;
+    game->mouse_pos.y = 0;
+
     game->quit = false;
     game->puff = load_sprite("assets/vuse.png", game->renderer, true);
     if (!game->puff) {

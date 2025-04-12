@@ -1,5 +1,15 @@
 #include "puff.h"
 
+
+void get_mouse_position(game_t *game)
+{
+    int mouse_x, mouse_y;
+    SDL_GetMouseState(&mouse_x, &mouse_y);
+    game->mouse_pos.x = mouse_x;
+    game->mouse_pos.y = mouse_y;
+}
+
+
 int handle_event(SDL_Event event, game_t *game)
 {
     int key;

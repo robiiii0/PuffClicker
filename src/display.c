@@ -16,11 +16,36 @@ void draw_settings_button(SDL_Renderer *renderer, settings_button_t *button, TTF
     int textWidth = 0, textHeight = 0;
     SDL_QueryTexture(textTexture, NULL, NULL, &textWidth, &textHeight);
     SDL_Rect textRect = {button->x + (button->w - textWidth) / 2, button->y + (button->h - textHeight) / 2, textWidth, textHeight};
-    
+
     SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
     SDL_DestroyTexture(textTexture);
 }
 
+
+void render_text(SDL_Renderer *renderer, TTF_Font *font, const char *text, SDL_Color color, int x, int y)
+{
+    SDL_Surface *surface = TTF_RenderText_Solid(font, text, color);
+    if (!surface) {
+        LOG_ERROR("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
+        return;
+    }
+
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+    if (!texture) {
+        LOG_ERROR("Unable to create texture from surface! SDL_Error: %s\n", SDL_GetError());
+        SDL_FreeSurface(surface);
+        return;
+    }
+
+    int textW, textH;
+    SDL_QueryTexture(texture, NULL, NULL, &textW, &textH);
+    SDL_Rect rect = { x, y, textW, textH };
+
+    SDL_RenderCopy(renderer, texture, NULL, &rect);
+
+    SDL_DestroyTexture(texture);
+    SDL_FreeSurface(surface);
+}
 
 void display_upgrades(game_t *game)
 {
@@ -45,24 +70,39 @@ void display_upgrades(game_t *game)
         // Affiche le nom
         char buffer[64];
         snprintf(buffer, sizeof(buffer), "%s - %d taffs", upgrades[i].name, upgrades[i].cost);
-        SDL_Surface *surface = TTF_RenderText_Blended(font, buffer, textColor);
-        SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
 
-        int textW, textH;
-        SDL_QueryTexture(texture, NULL, NULL, &textW, &textH);
-        SDL_Rect textRect = {
-            upgrades[i].box.x + 10,
-            upgrades[i].box.y + (upgrades[i].box.h - textH) / 2,
-            textW,
-            textH
-        };
+        render_text(renderer, font, buffer, textColor, upgrades[i].box.x + 10, upgrades[i].box.y + 10);
 
-        SDL_RenderCopy(renderer, texture, NULL, &textRect);
+        // Affiche la tooltip
+        float mouse_x = game->mouse_pos.x;
+        float mouse_y = game->mouse_pos.y;
+        if (mouse_x >= upgrades[i].box.x && mouse_x <= upgrades[i].box.x + upgrades[i].box.w &&
+            mouse_y >= upgrades[i].box.y && mouse_y <= upgrades[i].box.y + upgrades[i].box.h) {
 
-        SDL_FreeSurface(surface);
-        SDL_DestroyTexture(texture);
+            // Affiche le fond de la tooltip
+            SDL_Rect tooltip_bg = {
+                upgrades[i].box.x + upgrades[i].box.w + 10,
+                mouse_y,
+                400,  // Largeur de la tooltip
+                150    // Hauteur de la tooltip
+            };
+
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            SDL_RenderFillRect(renderer, &tooltip_bg);
+
+            char buffer[64];
+            snprintf(buffer, sizeof(buffer), "+%.2f taffs/click | Tu as %d", upgrades[i].value, upgrades[i].owned);
+            render_text(renderer, font, buffer, (SDL_Color){255,255,255, 255}, upgrades[i].box.x + upgrades[i].box.w + 11, mouse_y);
+
+
+            SDL_SetRenderDrawColor(renderer, 0, 0, 0, 200);
+
+        }
+
     }
+
 }
+
 
 void display_text(game_t *game)
 {
@@ -213,6 +253,8 @@ void run_game(game_t *game)
         SDL_RenderCopy(game->renderer, game->puff->texture, NULL, &game->puff->dest_rect);
         display_text(game);  // (si display_text fonctionne bien)
         display_taffs_per_second(game);
+
+        get_mouse_position(game);
 
         display_upgrades(game);
 

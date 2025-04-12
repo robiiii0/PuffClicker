@@ -67,6 +67,7 @@ typedef struct upgrade_s {
     upgrade_type_t type;
     float value;
     SDL_Rect box;
+    int owned;
 } upgrade_t;
 
 
@@ -99,6 +100,11 @@ typedef struct music_s {
 extern upgrade_t upgrades[UPGRADE_COUNT];
 
 
+typedef struct mouse_pos_s {
+    float x;
+    float y;
+} mouse_pos_t;
+
 typedef struct game_s {
     SDL_Window *window;
     SDL_Renderer *renderer;
@@ -115,9 +121,11 @@ typedef struct game_s {
     bool quit;
     float delta_time;
 
+    mouse_pos_t mouse_pos;
+
     Uint32 puff_anim_start;  // temps du dernier clic
     parallax_init_t parallax_init[PARALLAX_NUMBERS];
-    bool puff_animating; 
+    bool puff_animating;
     music_t *music;
 } game_t;
 
@@ -129,8 +137,13 @@ void free_game(game_t *game);
 int handle_event(SDL_Event event, game_t *game);
 sprite_t *load_sprite(const char *filepath, SDL_Renderer *renderer, bool size_reduction);
 void destroy_sprite(sprite_t *sprite);
+<<<<<<< Updated upstream
 
 void update_delta_time(game_t* game);
 music_t *load_music();
 void free_music(music_t *music);
 void apply_upgrade(upgrade_t *upgrade, player_t *player);
+=======
+void apply_upgrade(upgrade_t *upgrade, player_t *player);
+void get_mouse_position(game_t *game);
+>>>>>>> Stashed changes
