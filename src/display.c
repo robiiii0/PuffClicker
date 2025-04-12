@@ -112,13 +112,13 @@ void display_text(game_t *game)
 
     SDL_Surface* textSurface = TTF_RenderText_Solid(game->font, buffer, textColor);
     if (!textSurface) {
-        printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
+        LOG_ERROR("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
         return;
     }
 
     SDL_Texture* textTexture = SDL_CreateTextureFromSurface(game->renderer, textSurface);
     if (!textTexture) {
-        printf("Unable to create texture from surface! SDL_Error: %s\n", SDL_GetError());
+        LOG_ERROR("Unable to create texture from surface! SDL_Error: %s\n", SDL_GetError());
         SDL_FreeSurface(textSurface);
         return;
     }
@@ -142,13 +142,13 @@ void display_taffs_per_second(game_t *game)
 
     SDL_Surface* surface = TTF_RenderText_Solid(game->font, buffer, textColor);
     if (!surface) {
-        printf("Erreur texte taffs/sec: %s\n", TTF_GetError());
+        LOG_ERROR("Erreur texte taffs/sec: %s\n", TTF_GetError());
         return;
     }
 
     SDL_Texture* texture = SDL_CreateTextureFromSurface(game->renderer, surface);
     if (!texture) {
-        printf("Erreur texture texte taffs/sec: %s\n", SDL_GetError());
+        LOG_ERROR("Erreur texture texte taffs/sec: %s\n", SDL_GetError());
         SDL_FreeSurface(surface);
         return;
     }
@@ -180,10 +180,10 @@ void render_background(game_t *game) {
         SDL_Rect dest_rect = { bg_x, bg_y, bg_width, bg_height };
 
         if (SDL_RenderCopy(game->renderer, game->background->texture, NULL, &dest_rect) != 0) {
-            printf("Erreur lors de l'affichage du fond d'écran: %s\n", SDL_GetError());
+            LOG_ERROR("Erreur lors de l'affichage du fond d'écran: %s\n", SDL_GetError());
         }
     } else {
-        printf("Erreur : Le fond d'écran n'a pas été chargé correctement.\n");
+        LOG_ERROR("Erreur : Le fond d'écran n'a pas été chargé correctement.\n");
     }
 }
 

@@ -10,7 +10,7 @@ music_t *load_music() {
     music->defeat = Mix_LoadMUS("assets/defeat.ogg");
 
     if (!music->menu || !music->gameplay || !music->victory || !music->defeat) {
-        printf("Erreur chargement musique : %s\n", Mix_GetError());
+        LOG_ERROR("Erreur chargement musique : %s\n", Mix_GetError());
         // Tu peux gérer ça proprement ici
         free(music);
         return NULL;

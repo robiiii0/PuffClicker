@@ -41,7 +41,7 @@ sprite_t *load_sprite(const char *filepath, SDL_Renderer *renderer, bool size_re
     sprite->dest_rect.x = (SCREEN_WIDTH - new_w) / 2;
     sprite->dest_rect.y = (SCREEN_HEIGHT - new_h) / 2;
 
-    printf("Sprite loaded: %s, size: %dx%d\n", filepath, new_w, new_h);
+    LOG_INFO("Sprite loaded: %s, size: %dx%d\n", filepath, new_w, new_h);
 
     return sprite;
 }
